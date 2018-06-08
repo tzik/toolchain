@@ -13,8 +13,9 @@ if ! [ -x "${prefix}/bin/cc" ]; then
     "${toolchain_dir}/bin/unmerge" "${bootstrap_prefix}" "${package_name}"
     "${toolchain_dir}/bin/merge" "${bootstrap_prefix}" "${package_file}"
   } 2>&1 | tee log-bootstrap
-  if [ "${PIPESTATUS[0]}" -ne 0 ]; then
-    exit "${PIPESTATUS[0]}"
+  rv="${PIPESTATUS[0]}"
+  if [ "${rv}" -ne 0 ]; then
+    exit "${rv}"
   fi
   PATH="${bootstrap_prefix}/bin:${PATH}"
 fi
