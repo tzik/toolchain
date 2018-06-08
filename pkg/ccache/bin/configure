@@ -3,9 +3,7 @@ source "$(dirname "$0")/package.sh"
 
 cd "${src_dir}"
 ./autogen.sh
+touch dev_mode_disabled
 
 export CC="cc"
-sed 's:/usr/local/etc/\(asciidoc/docbook-xsl/manpage\.xsl\):/usr/share/\1:' \
-  -i dev.mk.in
 ./configure --prefix="${prefix}"
-

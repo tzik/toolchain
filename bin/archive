@@ -1,0 +1,17 @@
+#!/bin/bash
+cd "$(dirname "$0")/.."
+base_dir="${PWD}"
+
+name="$(git rev-parse HEAD | sed 's/^\(.\{8\}\).*$/\1/')"
+archive_dir="${base_dir}/tmp/archive-${name}"
+
+rm -rf "${archive_dir}"
+mkdir -p "${archive_dir}"
+
+git archive --format tar -o "${archive_dir}/top.tar" HEAD
+git submodule foreach --recursive \
+  "git archive --format=tar --prefix=\${displaypath}/ -o \"${archive_dir}/\${sha1}.tar\" HEAD"
+
+for i in "${archive_dir}"/*.tar; do
+  tar Af "archive-${name}.tar" "${i}"
+done

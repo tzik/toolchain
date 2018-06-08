@@ -1,7 +1,7 @@
 diff --git a/include/clang/AST/Decl.h b/include/clang/AST/Decl.h
 index c10ca9e967..0a0b2c16c0 100644
---- a/src/clang/include/clang/AST/Decl.h
-+++ b/src/clang/include/clang/AST/Decl.h
+--- a/clang/include/clang/AST/Decl.h
++++ b/clang/include/clang/AST/Decl.h
 @@ -879,6 +879,12 @@ protected:
      DAK_Normal
    };
@@ -49,8 +49,8 @@ index c10ca9e967..0a0b2c16c0 100644
    /// Determine whether this variable is the for-range-declaration in
 diff --git a/include/clang/Sema/Scope.h b/include/clang/Sema/Scope.h
 index a3379ff34f..298c5461ad 100644
---- a/src/clang/include/clang/Sema/Scope.h
-+++ b/src/clang/include/clang/Sema/Scope.h
+--- a/clang/include/clang/Sema/Scope.h
++++ b/clang/include/clang/Sema/Scope.h
 @@ -201,10 +201,6 @@ private:
    /// Used to determine if errors occurred in this scope.
    DiagnosticErrorTrap ErrorTrap;
@@ -89,8 +89,8 @@ index a3379ff34f..298c5461ad 100644
    void Init(Scope *parent, unsigned flags);
 diff --git a/lib/Sema/Scope.cpp b/lib/Sema/Scope.cpp
 index eae5a328bf..5a46ba26d2 100644
---- a/src/clang/lib/Sema/Scope.cpp
-+++ b/src/clang/lib/Sema/Scope.cpp
+--- a/clang/lib/Sema/Scope.cpp
++++ b/clang/lib/Sema/Scope.cpp
 @@ -92,7 +92,6 @@ void Scope::Init(Scope *parent, unsigned flags) {
    UsingDirectives.clear();
    Entity = nullptr;
@@ -138,8 +138,8 @@ index eae5a328bf..5a46ba26d2 100644
  }
 diff --git a/lib/Sema/SemaDecl.cpp b/lib/Sema/SemaDecl.cpp
 index 862da62149..42477324ca 100644
---- a/src/clang/lib/Sema/SemaDecl.cpp
-+++ b/src/clang/lib/Sema/SemaDecl.cpp
+--- a/clang/lib/Sema/SemaDecl.cpp
++++ b/clang/lib/Sema/SemaDecl.cpp
 @@ -1798,8 +1798,6 @@ static void CheckPoppedLabel(LabelDecl *L, Sema &S) {
  }
  
@@ -201,8 +201,8 @@ index 862da62149..42477324ca 100644
      // GNU warning -Wmissing-prototypes:
 diff --git a/lib/Sema/SemaExpr.cpp b/lib/Sema/SemaExpr.cpp
 index aeedd6b169..220d690695 100644
---- a/src/clang/lib/Sema/SemaExpr.cpp
-+++ b/src/clang/lib/Sema/SemaExpr.cpp
+--- a/clang/lib/Sema/SemaExpr.cpp
++++ b/clang/lib/Sema/SemaExpr.cpp
 @@ -13385,13 +13385,9 @@ ExprResult Sema::ActOnBlockStmtExpr(SourceLocation CaretLoc,
    if (Body && getCurFunction()->HasPotentialAvailabilityViolations)
      DiagnoseUnguardedAvailabilityViolations(BSI->TheDecl);
@@ -222,8 +222,8 @@ index aeedd6b169..220d690695 100644
    PopFunctionScopeInfo(&WP, Result->getBlockDecl(), Result);
 diff --git a/lib/Sema/SemaStmt.cpp b/lib/Sema/SemaStmt.cpp
 index ccf25ee9eb..04f5114510 100644
---- a/src/clang/lib/Sema/SemaStmt.cpp
-+++ b/src/clang/lib/Sema/SemaStmt.cpp
+--- a/clang/lib/Sema/SemaStmt.cpp
++++ b/clang/lib/Sema/SemaStmt.cpp
 @@ -3455,12 +3455,9 @@ Sema::ActOnReturnStmt(SourceLocation ReturnLoc, Expr *RetValExp,
                             ExpressionEvaluationContext::DiscardedStatement)
      return R;
@@ -242,8 +242,8 @@ index ccf25ee9eb..04f5114510 100644
  
 diff --git a/lib/Sema/SemaTemplateInstantiateDecl.cpp b/lib/Sema/SemaTemplateInstantiateDecl.cpp
 index dd62d4c98f..2f2a145b94 100644
---- a/src/clang/lib/Sema/SemaTemplateInstantiateDecl.cpp
-+++ b/src/clang/lib/Sema/SemaTemplateInstantiateDecl.cpp
+--- a/clang/lib/Sema/SemaTemplateInstantiateDecl.cpp
++++ b/clang/lib/Sema/SemaTemplateInstantiateDecl.cpp
 @@ -740,12 +740,13 @@ Decl *TemplateDeclInstantiator::VisitVarDecl(VarDecl *D,
    SemaRef.BuildVariableInstantiation(Var, D, TemplateArgs, LateAttrs, Owner,
                                       StartingScope, InstantiatingVarTemplate);
@@ -262,8 +262,8 @@ index dd62d4c98f..2f2a145b94 100644
    return Var;
 diff --git a/lib/Serialization/ASTReaderDecl.cpp b/lib/Serialization/ASTReaderDecl.cpp
 index a1ce26d27c..699a98ce4f 100644
---- a/src/clang/lib/Serialization/ASTReaderDecl.cpp
-+++ b/src/clang/lib/Serialization/ASTReaderDecl.cpp
+--- a/clang/lib/Serialization/ASTReaderDecl.cpp
++++ b/clang/lib/Serialization/ASTReaderDecl.cpp
 @@ -1326,7 +1326,7 @@ ASTDeclReader::RedeclarableResult ASTDeclReader::VisitVarDeclImpl(VarDecl *VD) {
      VD->NonParmVarDeclBits.IsThisDeclarationADemotedDefinition =
          Record.readInt();
@@ -275,8 +275,8 @@ index a1ce26d27c..699a98ce4f 100644
      VD->NonParmVarDeclBits.ARCPseudoStrong = Record.readInt();
 diff --git a/lib/Serialization/ASTWriterDecl.cpp b/lib/Serialization/ASTWriterDecl.cpp
 index cf35a2bc1f..c1f983e5ce 100644
---- a/src/clang/lib/Serialization/ASTWriterDecl.cpp
-+++ b/src/clang/lib/Serialization/ASTWriterDecl.cpp
+--- a/clang/lib/Serialization/ASTWriterDecl.cpp
++++ b/clang/lib/Serialization/ASTWriterDecl.cpp
 @@ -918,7 +918,7 @@ void ASTDeclWriter::VisitVarDecl(VarDecl *D) {
    if (!isa<ParmVarDecl>(D)) {
      Record.push_back(D->isThisDeclarationADemotedDefinition());
@@ -299,7 +299,7 @@ diff --git a/test/CodeGenCXX/nrvo-noopt.cpp b/test/CodeGenCXX/nrvo-noopt.cpp
 new file mode 100644
 index 0000000000..09e7074953
 --- /dev/null
-+++ b/src/clang/test/CodeGenCXX/nrvo-noopt.cpp
++++ b/clang/test/CodeGenCXX/nrvo-noopt.cpp
 @@ -0,0 +1,58 @@
 +// RUN: %clang_cc1 -emit-llvm -O0 -o - %s | FileCheck %s
 +
@@ -361,8 +361,8 @@ index 0000000000..09e7074953
 +}
 diff --git a/test/CodeGenCXX/nrvo.cpp b/test/CodeGenCXX/nrvo.cpp
 index 0f359b9c90..1da4308e26 100644
---- a/src/clang/test/CodeGenCXX/nrvo.cpp
-+++ b/src/clang/test/CodeGenCXX/nrvo.cpp
+--- a/clang/test/CodeGenCXX/nrvo.cpp
++++ b/clang/test/CodeGenCXX/nrvo.cpp
 @@ -130,17 +130,13 @@ X test2(bool B) {
  }
  
@@ -455,7 +455,7 @@ diff --git a/test/SemaCXX/nrvo-ast.cpp b/test/SemaCXX/nrvo-ast.cpp
 new file mode 100644
 index 0000000000..63fac006e2
 --- /dev/null
-+++ b/src/clang/test/SemaCXX/nrvo-ast.cpp
++++ b/clang/test/SemaCXX/nrvo-ast.cpp
 @@ -0,0 +1,153 @@
 +// RUN: %clang_cc1 -fcxx-exceptions -fsyntax-only -ast-dump -o - %s | FileCheck %s
 +

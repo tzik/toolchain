@@ -53,16 +53,6 @@
 	url = https://chromium.googlesource.com/chromium/src/tools/clang.git
 	branch = master
 	shallow = true
-[submodule "pkg/glibc/src"]
-	path = pkg/glibc/src
-	url = git://sourceware.org/git/glibc.git
-	branch = master
-	shallow = true
-[submodule "pkg/binutils/src"]
-	path = pkg/binutils/src
-	url = git://sourceware.org/git/binutils-gdb.git
-	branch = master
-	shallow = true
 [submodule "pkg/cmake/src"]
 	path = pkg/cmake/src
 	url = https://chromium.googlesource.com/external/github.com/Kitware/CMake.git
