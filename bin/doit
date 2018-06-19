@@ -8,3 +8,4 @@ for i in "${pkgs[@]}"; do
   echo "Building $i."
   "./pkg/${i}/bin/doit"
 done 2>&1 | tee log
+exit "${PIPESTATUS[0]}"

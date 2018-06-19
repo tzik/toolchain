@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+shopt -s lastpipe
+
+cd "$(dirname "$0")/.."
+# git submodule init
+git config --name-only --get-regexp '^submodule\..*\.active$' true | \
+  while read i; do
+    i="${i%.active}"
+    if [ "$(git config --default false -f ".gitmodules" "${i}.shallow")" == "true" ]; then
+      shallow_modules+=("${i#submodule.}")
+    fi
+  done
+
+git submodule update --depth=1 "${shallow_modules[@]}"
+git submodule update --init --recursive
