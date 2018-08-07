@@ -33,6 +33,7 @@ else
     flags+=("-DCMAKE_BUILD_TYPE=Debug")
   else
     flags+=("-DCMAKE_BUILD_TYPE=Release")
+    # flags+=("-DLLVM_ENABLE_LTO=thin")
   fi
 
   flags+=(
@@ -71,6 +72,8 @@ else
     "-DLIBCXXABI_USE_LLVM_UNWINDER=ON"
     "-DLIBCXXABI_LIBUNWIND_PATH=${src_dir}/libunwind"
     "-DLIBCXXABI_USE_COMPILER_RT=ON"
+    "-DLIBCXXABI_ENABLE_SHARED=ON"
+    "-DLIBCXXABI_INSTALL_LIBRARY=ON"
 
     "-DLLVM_POLLY_BUILD=ON"
     "-DLLVM_EXTERNAL_PROJECTS=chromium-tools"

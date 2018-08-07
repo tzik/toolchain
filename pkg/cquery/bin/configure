@@ -2,14 +2,9 @@
 source "$(dirname "$0")/package.sh"
 
 declare -a flags
+cmake_dir="${src_dir}"
 
 flags+=(
-  "--out=${build_dir}"
-  "--top=${src_dir}"
-  "--prefix=${prefix}"
-  "--llvm-config=llvm-config"
+  "-DSYSTEM_CLANG=ON"
 )
-
-cd "${src_dir}"
-export CXX="c++"
-"${src_dir}/waf" configure "${flags[@]}"
+source "${toolchain_dir}/lib/configure-cmake.sh"

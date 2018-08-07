@@ -14,4 +14,4 @@ package_name="$(basename "${base_dir}")"
 package_file="${base_dir}/${package_name}.tar"
 metadata_file="${prefix}/packages/${package_name}"
 
-mkdir -p "${image_dir}"
+mkdir -p "${build_dir}" "${image_dir}"
