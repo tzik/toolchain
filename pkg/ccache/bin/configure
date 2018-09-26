@@ -6,4 +6,4 @@ cd "${src_dir}"
 touch dev_mode_disabled
 
 export CC="cc"
-./configure --prefix="${prefix}"
+./configure --prefix="${prefix}" --disable-man

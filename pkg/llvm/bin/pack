@@ -15,6 +15,7 @@ wrap() {
 prefix="\${0%/*}/.."
 lib_dir="\${prefix}/lib"
 binary="\${prefix}/bin/$2"
+includes=(-isystem "\${prefix}/include")
 
 if [ "\$#" = 0 ]; then
   exec "\${binary}"
@@ -39,17 +40,17 @@ for i in "\$@"; do
 done
 
 if [ -n "\${is_solink}" ]; then
-  exec "\${binary}" "\$@" -L"\${lib_dir}"
+  exec "\${binary}" "\${includes[@]}" "\$@" -L"\${lib_dir}"
 fi
 
 if [ -n "\${is_link}" ]; then
-  exec "\${binary}" "\$@" -L"\${lib_dir}" -Wl,--rpath="\${lib_dir}"
+  exec "\${binary}" "\${includes[@]}" "\$@" -L"\${lib_dir}" -Wl,--rpath="\${lib_dir}"
 fi
 
 export CCACHE_DIR="\${prefix}/var/ccache"
 export CCACHE_HARDLINK=1
 export CCACHE_COMPILERCHECK="string:\${binary},bootstrap=${bootstrap:-0}"
-exec ccache "\${binary}" "\$@"
+exec ccache "\${binary}" "\${includes[@]}" "\$@"
 EOF
   chmod a+x "${bin_dir}/$1"
 }
