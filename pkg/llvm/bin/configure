@@ -39,6 +39,8 @@ else
   flags+=(
     # "-DLLVM_ENABLE_ASSERTIONS=ON"
 
+    "-DLLVM_TOOL_LLDB_BUILD=OFF"
+
     "-DLLVM_TARGETS_TO_BUILD=X86;ARM;AArch64"
     "-DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=WebAssembly"
     "-DBUILD_SHARED_LIBS=ON"
@@ -53,7 +55,7 @@ else
 
     clang
     lld
-    lldb
+    # lldb
     clang-tools-extra
     polly
     chromium-tools
