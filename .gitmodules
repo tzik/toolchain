@@ -113,3 +113,8 @@
 	url = https://github.com/cquery-project/cquery
 	branch = master
 	shallow = false
+[submodule "pkg/node/src"]
+	path = pkg/node/src
+	url = https://github.com/nodejs/node.git
+	branch = canary-base
+	shallow = false
