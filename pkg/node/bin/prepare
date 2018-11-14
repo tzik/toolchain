@@ -1,0 +1,6 @@
+#!/bin/bash
+source "$(dirname "$0")/package.sh"
+cd "${base_dir}"
+
+v8_dir="${toolchain_dir}/pkg/v8/v8"
+"${v8_dir}/tools/node/update_node.py" "${v8_dir}" "${src_dir}"
