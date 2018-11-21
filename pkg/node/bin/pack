@@ -1,5 +1,8 @@
 #!/bin/bash
 source "$(dirname "$0")/package.sh"
+rm -rf "${image_dir}"
+mkdir -p "${image_dir}"
+
 cd "${src_dir}"
 ln -srfT "${build_dir}/"{lib,lib.target}
 ./tools/install.py install "${image_dir}" "${prefix}"
