@@ -1,38 +1,7 @@
 #!/bin/bash
 source "$(dirname "$0")/package.sh"
-
 cd "${src_dir}"
-./configure --prefix="${prefix}" --ninja --build-v8-with-gn
-
-deps_v8_dir="${src_dir}/deps/v8"
-mkdir -p "${deps_v8_dir}/build/toolchain/custom"
-cat > "${deps_v8_dir}/build/toolchain/custom/BUILD.gn" <<EOF
-import("//build/toolchain/gcc_toolchain.gni")
-gcc_toolchain("cc") {
-  cc = "cc"
-  cxx = "c++"
-  ld = cxx
-  readelf = "readelf"
-  ar = "llvm-ar"
-  nm = "nm"
-
-  enable_linker_map = true
-  extra_cxxflags = "-Wno-tautological-unsigned-zero-compare" +
-      " -Wno-tautological-constant-compare -Wno-null-pointer-arithmetic"
-
-  toolchain_args = {
-    current_cpu = host_cpu
-    current_os = target_os
-    is_clang = true
-  }
-}
-EOF
-
-args_file="${src_dir}/out/Release/obj/deps/v8/gypfiles/v8_monolith.gen/gn/args.gn"
-sed -i '/## {/,/## }/d' "${args_file}"
-cat >> "${args_file}" <<EOF
-## {
-custom_toolchain = "//build/toolchain/custom:cc"
-clang_base_path = "${prefix}"
-## }
-EOF
+./configure --prefix="${prefix}" \
+  --ninja \
+  --without-bundled-v8 \
+  --shared

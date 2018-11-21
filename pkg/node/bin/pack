@@ -1,6 +1,16 @@
 #!/bin/bash
 source "$(dirname "$0")/package.sh"
 cd "${src_dir}"
+ln -srfT "${build_dir}/"{lib,lib.target}
 ./tools/install.py install "${image_dir}" "${prefix}"
-strip "${image_dir}${prefix}/bin/node"
+
+mkdir -p "${image_dir}${prefix}/libexec"
+cp "${build_dir}/node" "${image_dir}${prefix}/libexec/node"
+strip "${image_dir}${prefix}/libexec/node"
+cat > "${image_dir}${prefix}/bin/node" <<EOF
+#!/bin/bash
+exec "\$(dirname "\$0")/../libexec/node" "\$@"
+EOF
+chmod a+x "${image_dir}${prefix}/bin/node"
+
 source "${toolchain_dir}/lib/pack.sh"

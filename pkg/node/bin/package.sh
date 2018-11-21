@@ -6,7 +6,12 @@ toolchain_dir="$(realpath -s "${base_dir}/../..")"
 
 src_dir="${base_dir}/src"
 
-build_dir="${base_dir}/build"
+: "${debug:=}"
+if [ -n "${debug}" ]; then
+  build_dir="${src_dir}/out/Debug"
+else
+  build_dir="${src_dir}/out/Release"
+fi
 image_dir="${base_dir}/image"
 prefix="${toolchain_dir}/out/usr"
 

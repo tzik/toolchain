@@ -1,0 +1,32 @@
+diff --git a/node.gypi b/node.gypi
+index fdf81b7465..7e9e22a186 100644
+--- a/node.gypi
++++ b/node.gypi
+@@ -84,6 +84,15 @@
+         }],
+       ],
+     }],
++    [ 'node_shared=="true" and node_use_bundled_v8=="false"', {
++      'link_settings': {
++        'libraries': [
++          '-lv8',
++          '-lv8_libbase',
++          '-lv8_libplatform',
++        ],
++      },
++    }],
+     [ 'node_use_v8_platform=="true"', {
+       'defines': [
+         'NODE_USE_V8_PLATFORM=1',
+diff --git a/src/node.cc b/src/node.cc
+index f6ec033bbb..2c94432a00 100644
+--- a/src/node.cc
++++ b/src/node.cc
+@@ -2705,6 +2705,7 @@ int Start(int argc, char** argv) {
+ 
+   InitializeV8Platform(per_process_opts->v8_thread_pool_size);
+   V8::Initialize();
++  V8::InitializeExternalStartupData(argv[0]);
+   performance::performance_v8_start = PERFORMANCE_NOW();
+   v8_initialized = true;
+   const int exit_code =

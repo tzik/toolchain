@@ -25,6 +25,12 @@ cp -t "${image_dir}${prefix}/lib" \
   "libv8_libbase.so" \
   "libv8_libplatform.so"
 
+cd "${src_dir}/include"
+mkdir -p "${image_dir}${prefix}/include"
+mkdir -p "${image_dir}${prefix}/include/libplatform"
+cp -t "${image_dir}${prefix}/include" v8*.h
+cp -t "${image_dir}${prefix}/include/libplatform" libplatform/*.h
+
 mkdir -p "${image_dir}${prefix}/bin"
 cat > "${image_dir}${prefix}/bin/d8" <<EOF
 #!/bin/bash

@@ -1,0 +1,13 @@
+diff --git a/include/v8-platform.h b/include/v8-platform.h
+index b9b0363a42..c8a4769652 100644
+--- a/include/v8-platform.h
++++ b/include/v8-platform.h
+@@ -421,7 +421,7 @@ class Platform {
+    * since epoch. Useful for implementing |CurrentClockTimeMillis| if
+    * nothing special needed.
+    */
+-  static double SystemClockTimeMillis();
++  static double V8_EXPORT SystemClockTimeMillis();
+ };
+ 
+ }  // namespace v8

@@ -4,6 +4,7 @@ source "$(dirname "$0")/package.sh"
 export PATH="${toolchain_dir}/out/usr/bin:${toolchain_dir}/pkg/depot_tools:/usr/bin:/usr/sbin:/bin:/sbin"
 
 {
+  ./bin/prepare
   ./bin/configure
   ./bin/build
   ./bin/pack
