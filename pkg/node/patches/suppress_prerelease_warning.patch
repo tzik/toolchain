@@ -1,0 +1,32 @@
+diff --git a/deps/npm/bin/npm-cli.js b/deps/npm/bin/npm-cli.js
+index 6f76b23828..14cc963378 100755
+--- a/deps/npm/bin/npm-cli.js
++++ b/deps/npm/bin/npm-cli.js
+@@ -23,8 +23,6 @@
+   log.pause() // will be unpaused when config is loaded.
+   log.info('it worked if it ends with', 'ok')
+ 
+-  unsupported.checkForUnsupportedNode()
+-
+   var path = require('path')
+   var npm = require('../lib/npm.js')
+   var npmconf = require('../lib/config/core.js')
+diff --git a/deps/npm/lib/install/validate-tree.js b/deps/npm/lib/install/validate-tree.js
+index 24a140171d..572ae13a51 100644
+--- a/deps/npm/lib/install/validate-tree.js
++++ b/deps/npm/lib/install/validate-tree.js
+@@ -67,14 +67,6 @@ function thenCheckTop (idealTree, next) {
+     idealTree.warnings.push(er)
+   }
+ 
+-  var nodeVersion = npm.config.get('node-version')
+-  if (/-/.test(nodeVersion)) {
+-    // if this is a prerelease node…
+-    var warnObj = new Error('You are using a pre-release version of node and things may not work as expected')
+-    warnObj.code = 'ENODEPRE'
+-    idealTree.warnings.push(warnObj)
+-  }
+-
+   next()
+ }
+ 
