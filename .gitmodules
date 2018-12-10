@@ -95,9 +95,9 @@
 	shallow = false
 [submodule "pkg/protobuf/src"]
 	path = pkg/protobuf/src
-	url = https://chromium.googlesource.com/external/github.com/google/protobuf.git
+	url = https://github.com/protocolbuffers/protobuf.git
 	branch = master
-	shallow = true
+	shallow = false
 [submodule "pkg/z3/src"]
 	path = pkg/z3/src
 	url = https://github.com/Z3Prover/z3.git
