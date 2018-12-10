@@ -1,0 +1,107 @@
+commit c709c683e8f975474abbe555beae74f5169d31c6
+Author: tzik <mail@tzik.jp>
+Date:   Wed Dec 5 16:15:39 2018
+
+    Replace Isolate::RunMicrotasks with MicrotasksScope::PerformCheckpoint
+
+diff --git a/lib/internal/process/next_tick.js b/lib/internal/process/next_tick.js
+index 046449d658..ef609fd25b 100644
+--- a/lib/internal/process/next_tick.js
++++ b/lib/internal/process/next_tick.js
+@@ -22,10 +22,10 @@ function setupNextTick(_setupNextTick, _setupPromises) {
+   // tickInfo is used so that the C++ code in src/node.cc can
+   // have easy access to our nextTick state, and avoid unnecessary
+   // calls into JS land.
+-  // runMicrotasks is used to run V8's micro task queue.
++  // performMicrotaskCheckpoint is used to run V8's micro task queue.
+   const [
+     tickInfo,
+-    runMicrotasks
++    performMicrotaskCheckpoint
+   ] = _setupNextTick(internalTickCallback);
+ 
+   // *Must* match Environment::TickInfo::Fields in src/env.h.
+@@ -40,7 +40,7 @@ function setupNextTick(_setupNextTick, _setupPromises) {
+ 
+   function _tickCallback() {
+     if (tickInfo[kHasScheduled] === 0 && tickInfo[kHasPromiseRejections] === 0)
+-      runMicrotasks();
++      performMicrotaskCheckpoint();
+     if (tickInfo[kHasScheduled] === 0 && tickInfo[kHasPromiseRejections] === 0)
+       return;
+ 
+@@ -74,7 +74,7 @@ function setupNextTick(_setupNextTick, _setupPromises) {
+         emitAfter(asyncId);
+       }
+       tickInfo[kHasScheduled] = 0;
+-      runMicrotasks();
++      performMicrotaskCheckpoint();
+     } while (!queue.isEmpty() || emitPromiseRejectionWarnings());
+     tickInfo[kHasPromiseRejections] = 0;
+   }
+diff --git a/src/bootstrapper.cc b/src/bootstrapper.cc
+index 93c1035617..e559d2c13c 100644
+--- a/src/bootstrapper.cc
++++ b/src/bootstrapper.cc
+@@ -18,6 +18,7 @@ using v8::kPromiseRejectWithNoHandler;
+ using v8::kPromiseResolveAfterResolved;
+ using v8::Local;
+ using v8::MaybeLocal;
++using v8::MicrotasksScope;
+ using v8::Number;
+ using v8::Object;
+ using v8::Promise;
+@@ -26,8 +27,8 @@ using v8::PromiseRejectMessage;
+ using v8::String;
+ using v8::Value;
+ 
+-void RunMicrotasks(const FunctionCallbackInfo<Value>& args) {
+-  args.GetIsolate()->RunMicrotasks();
++void PerformMicrotaskCheckpoint(const FunctionCallbackInfo<Value>& args) {
++  MicrotasksScope::PerformCheckpoint(args.GetIsolate());
+ }
+ 
+ void SetupTraceCategoryState(const FunctionCallbackInfo<Value>& args) {
+@@ -45,14 +46,16 @@ void SetupNextTick(const FunctionCallbackInfo<Value>& args) {
+ 
+   env->set_tick_callback_function(args[0].As<Function>());
+ 
+-  Local<Function> run_microtasks_fn =
+-      env->NewFunctionTemplate(RunMicrotasks)->GetFunction(context)
+-          .ToLocalChecked();
+-  run_microtasks_fn->SetName(FIXED_ONE_BYTE_STRING(isolate, "runMicrotasks"));
++  Local<Function> microtask_checkpoint_fn =
++      env->NewFunctionTemplate(PerformMicrotaskCheckpoint)
++         ->GetFunction(context)
++         .ToLocalChecked();
++  microtask_checkpoint_fn->SetName(
++      FIXED_ONE_BYTE_STRING(isolate, "performMicrotaskCheckpoint"));
+ 
+   Local<Value> ret[] = {
+     env->tick_info()->fields().GetJSArray(),
+-    run_microtasks_fn
++    microtask_checkpoint_fn
+   };
+ 
+   args.GetReturnValue().Set(Array::New(isolate, ret, arraysize(ret)));
+diff --git a/src/callback_scope.cc b/src/callback_scope.cc
+index 0757b61061..610cef2e19 100644
+--- a/src/callback_scope.cc
++++ b/src/callback_scope.cc
+@@ -8,6 +8,7 @@ namespace node {
+ using v8::HandleScope;
+ using v8::Isolate;
+ using v8::Local;
++using v8::MicrotasksScope;
+ using v8::Object;
+ 
+ using AsyncHooks = Environment::AsyncHooks;
+@@ -96,7 +97,7 @@ void InternalCallbackScope::Close() {
+ 
+   if (!env_->can_call_into_js()) return;
+   if (!tick_info->has_scheduled()) {
+-    env_->isolate()->RunMicrotasks();
++    MicrotasksScope::PerformCheckpoint(env_->isolate());
+   }
+ 
+   // Make sure the stack unwound properly. If there are nested MakeCallback's

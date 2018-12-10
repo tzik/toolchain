@@ -41,11 +41,7 @@ for i in "\$@"; do
   esac
 done
 
-if [ -n "\${is_solink}" ]; then
-  exec "\${binary}" "\${includes[@]}" "\$@" -L"\${lib_dir}"
-fi
-
-if [ -n "\${is_link}" ]; then
+if [ -n "\${is_solink}" -o -n "\${is_link}" ]; then
   exec "\${binary}" "\${includes[@]}" "\$@" -L"\${lib_dir}" -Wl,--rpath="\${lib_dir}"
 fi
 
