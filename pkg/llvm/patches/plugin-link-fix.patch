@@ -1,0 +1,20 @@
+diff --git a/plugins/CMakeLists.txt b/plugins/CMakeLists.txt
+index 9c62dc3..c2db82f 100644
+--- a/chromium-tools/plugins/CMakeLists.txt
++++ b/chromium-tools/plugins/CMakeLists.txt
+@@ -21,6 +21,15 @@ foreach(source ${plugin_sources})
+ endforeach()
+ set_property(TARGET clang APPEND PROPERTY SOURCES ${absolute_sources})
+ 
++cmake_policy(SET CMP0079 NEW)
++target_link_libraries(clang
++  PRIVATE
++  clangAST
++  clangASTMatchers
++  clangLex
++  clangSema
++  )
++
+ cr_add_test(plugins_test
+   python tests/test.py
+   ${CMAKE_BINARY_DIR}/bin/clang
