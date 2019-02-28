@@ -31,8 +31,8 @@ index 24104ec34a..df6311f2d4 100644
  }
 diff --git a/src/callback_scope.cc b/src/callback_scope.cc
 index 885134799f..80ff34f61e 100644
---- a/src/callback_scope.cc
-+++ b/src/callback_scope.cc
+--- a/src/api/callback.cc
++++ b/src/api/callback.cc
 @@ -12,6 +12,7 @@ using v8::HandleScope;
  using v8::Isolate;
  using v8::Local;
