@@ -1,0 +1,46 @@
+diff --git a/src/ccache.c b/src/ccache.c
+index d324c93..f34c8f6 100644
+--- a/src/ccache.c
++++ b/src/ccache.c
+@@ -1252,10 +1252,10 @@ move_file_to_cache_same_fs(const char *source, const char *dest)
+ 
+ // Copy or link a file from the cache.
+ static void
+-get_file_from_cache(const char *source, const char *dest)
++get_file_from_cache(const char *source, const char *dest, bool do_link)
+ {
+ 	int ret;
+-	bool do_link = conf->hard_link && !file_is_compressed(source);
++	do_link = do_link && conf->hard_link && !file_is_compressed(source);
+ 	if (do_link) {
+ 		x_unlink(dest);
+ 		ret = link(source, dest);
+@@ -2237,22 +2237,22 @@ from_cache(enum fromcache_call_mode mode, bool put_object_in_manifest)
+ 
+ 	// Get result from cache.
+ 	if (!str_eq(output_obj, "/dev/null")) {
+-		get_file_from_cache(cached_obj, output_obj);
++		get_file_from_cache(cached_obj, output_obj, true);
+ 		if (using_split_dwarf) {
+-			get_file_from_cache(cached_dwo, output_dwo);
++			get_file_from_cache(cached_dwo, output_dwo, true);
+ 		}
+ 	}
+ 	if (produce_dep_file) {
+-		get_file_from_cache(cached_dep, output_dep);
++		get_file_from_cache(cached_dep, output_dep, false);
+ 	}
+ 	if (generating_coverage) {
+-		get_file_from_cache(cached_cov, output_cov);
++		get_file_from_cache(cached_cov, output_cov, true);
+ 	}
+ 	if (generating_stackusage) {
+-		get_file_from_cache(cached_su, output_su);
++		get_file_from_cache(cached_su, output_su, true);
+ 	}
+ 	if (generating_diagnostics) {
+-		get_file_from_cache(cached_dia, output_dia);
++		get_file_from_cache(cached_dia, output_dia, true);
+ 	}
+ 
+ 	// Update modification timestamps to save files from LRU cleanup. Also gives
