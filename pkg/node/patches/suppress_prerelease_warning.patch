@@ -8,9 +8,9 @@ index 6f76b23828..14cc963378 100755
  
 -  unsupported.checkForUnsupportedNode()
 -
-   var path = require('path')
    var npm = require('../lib/npm.js')
    var npmconf = require('../lib/config/core.js')
+   var errorHandler = require('../lib/utils/error-handler.js')
 diff --git a/deps/npm/lib/install/validate-tree.js b/deps/npm/lib/install/validate-tree.js
 index 24a140171d..572ae13a51 100644
 --- a/deps/npm/lib/install/validate-tree.js

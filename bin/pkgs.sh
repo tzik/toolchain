@@ -9,6 +9,6 @@ pkgs=(
   "node"
   "binaryen"
   "wabt"
-  "protobuf"
+  # "protobuf"
   "z3"
 )
