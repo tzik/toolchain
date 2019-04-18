@@ -18,15 +18,3 @@ index f6787e5ad8..021d2dc8cb 100644
      [ 'node_use_v8_platform=="true"', {
        'defines': [
          'NODE_USE_V8_PLATFORM=1',
-diff --git a/src/node.cc b/src/node.cc
-index 7a585646f6..8e326c609d 100644
---- a/src/node.cc
-+++ b/src/node.cc
-@@ -1432,6 +1432,7 @@ int Start(int argc, char** argv) {
- 
-   InitializeV8Platform(per_process::cli_options->v8_thread_pool_size);
-   V8::Initialize();
-+  V8::InitializeExternalStartupData(argv[0]);
-   performance::performance_v8_start = PERFORMANCE_NOW();
-   per_process::v8_initialized = true;
-   const int exit_code =

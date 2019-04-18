@@ -1,0 +1,24 @@
+diff --git a/src/node.cc b/src/node.cc
+index 53a9ae397b..f90c2553a4 100644
+--- a/src/node.cc
++++ b/src/node.cc
+@@ -809,6 +809,7 @@ int Start(int argc, char** argv) {
+ 
+   InitializeV8Platform(per_process::cli_options->v8_thread_pool_size);
+   V8::Initialize();
++  V8::InitializeExternalStartupData(argv[0]);
+   performance::performance_v8_start = PERFORMANCE_NOW();
+   per_process::v8_initialized = true;
+ 
+diff --git a/tools/code_cache/mkcodecache.cc b/tools/code_cache/mkcodecache.cc
+index 24f7e05e1f..04bae012ba 100644
+--- a/tools/code_cache/mkcodecache.cc
++++ b/tools/code_cache/mkcodecache.cc
+@@ -41,6 +41,7 @@ int main(int argc, char* argv[]) {
+   std::unique_ptr<v8::Platform> platform = v8::platform::NewDefaultPlatform();
+   v8::V8::InitializePlatform(platform.get());
+   v8::V8::Initialize();
++  v8::V8::InitializeExternalStartupData(argv[0]);
+ 
+   // Create a new Isolate and make it the current one.
+   Isolate::CreateParams create_params;

@@ -1,6 +1,11 @@
 #!/bin/bash
 source "$(dirname "$0")/package.sh"
 cd "${src_dir}"
+mkdir -p out/Release
+v8_libexec_dir="$(dirname "$(which d8)")/../libexec"
+cp "${v8_libexec_dir}/natives_blob.bin" out/Release
+cp "${v8_libexec_dir}/snapshot_blob.bin" out/Release
+
 ./configure --prefix="${prefix}" \
   --ninja \
   --without-bundled-v8 \
