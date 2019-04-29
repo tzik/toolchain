@@ -1,0 +1,14 @@
+diff --git a/src/node.cc b/src/node.cc
+index 10ef0d5bc7..aa179e7306 100644
+--- a/src/node.cc
++++ b/src/node.cc
+@@ -741,7 +741,8 @@ int InitializeNodeWithArgs(std::vector<std::string>* argv,
+                             &per_process::cli_options->icu_data_dir);
+   // Initialize ICU.
+   // If icu_data_dir is empty here, it will load the 'minimal' data.
+-  if (!i18n::InitializeICUDirectory(per_process::cli_options->icu_data_dir)) {
++  if (!i18n::InitializeICUDirectory(per_process::cli_options->icu_data_dir) ||
++      !V8::InitializeICUDefaultLocation(argv->at(0).c_str(), nullptr)) {
+     errors->push_back("could not initialize ICU "
+                       "(check NODE_ICU_DATA or --icu-data-dir parameters)\n");
+     return 9;

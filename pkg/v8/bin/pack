@@ -8,6 +8,7 @@ cd "${build_dir}"
 mkdir -p "${image_dir}${prefix}/libexec"
 cp -t "${image_dir}${prefix}/libexec" \
   "d8" \
+  "icudtl.dat" \
   "natives_blob.bin" \
   "snapshot_blob.bin"
 

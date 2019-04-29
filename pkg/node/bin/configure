@@ -4,9 +4,9 @@ cd "${src_dir}"
 mkdir -p out/Release
 v8_libexec_dir="$(dirname "$(which d8)")/../libexec"
 
-for i in natives_blob.bin snapshot_blob.bin; do
-  ln -sf "${v8_libexec_dir}/natives_blob.bin" out/Release
-  ln -sf "${v8_libexec_dir}/natives_blob.bin" .
+for i in natives_blob.bin snapshot_blob.bin icudtl.dat; do
+  ln -sf "${v8_libexec_dir}/$i" out/Release
+  ln -sf "${v8_libexec_dir}/$i" .
 done
 
 ./configure --prefix="${prefix}" \
