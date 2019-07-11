@@ -26,6 +26,7 @@ if [ -n "${bootstrap}" ]; then
     "-DLLVM_TARGETS_TO_BUILD=X86"
     "-DBUILD_SHARED_LIBS=OFF"
     "-DCMAKE_BUILD_TYPE=Release"
+    "-DLIBCXX_CXX_ABI=libsupc++"
   )
   tools=(clang)
 else
@@ -92,6 +93,10 @@ else
 
     "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
     "-DCOMPILER_RT_DEFAULT_TARGET_ARCH=X86_64"
+    "-DSANITIZER_CXX_ABI=libcxxabi"
+    "-DCOMPILER_RT_USE_LIBCXX=ON"
+
+    # "-DCOMPILER_RT_BUILD_SANITIZERS=OFF"
 
     "-DSANITIZER_CXX_ABI=libc++"
   )

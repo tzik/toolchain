@@ -1,5 +1,10 @@
 #!/bin/bash
 source "$(dirname "$0")/package.sh"
+
+rm -rf "${src_dir}/deps/v8"
+cp -r "${base_dir}/../v8/v8" "${src_dir}/deps"
+git -C "${src_dir}" checkout HEAD -- deps/v8/include/js_protocol.pdl
+
 source "${toolchain_dir}/lib/apply-patches.sh"
 
 # cd "${base_dir}"

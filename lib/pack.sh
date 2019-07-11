@@ -11,7 +11,7 @@ rpath_fix() {
 
   find "${target}" -type f -print0 | \
     while read -d $'\0' i; do
-      if ! patchelf --print-rpath "$i" > /dev/null 2>&1; then
+      if [ -z "$(patchelf --print-rpath "$i" 2> /dev/null)" ]; then
         continue
       fi
 

@@ -23,10 +23,10 @@ index 9e4fba6d9d..dbc78bd0d7 100644
 @@ -83,7 +83,7 @@ function processTicksAndRejections() {
        emitAfter(asyncId);
      }
-     setHasTickScheduled(false);
 -    runMicrotasks();
 +    performMicrotaskCheckpoint();
    } while (!queue.isEmpty() || processPromiseRejections());
+   setHasTickScheduled(false);
    setHasRejectionToWarn(false);
  }
 diff --git a/src/api/callback.cc b/src/api/callback.cc
