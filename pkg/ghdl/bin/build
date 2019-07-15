@@ -1,0 +1,5 @@
+#!/bin/bash
+source "$(dirname "$0")/package.sh"
+
+cd "${build_dir}"
+source "${toolchain_dir}/lib/build-make.sh"

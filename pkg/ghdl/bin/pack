@@ -1,0 +1,7 @@
+#!/bin/bash
+source "$(dirname "$0")/package.sh"
+rm -rf "${image_dir}"
+mkdir -p "${image_dir}"
+source "${toolchain_dir}/lib/install-make.sh"
+strip "${image_dir}${prefix}/bin/ghdl"
+source "${toolchain_dir}/lib/pack.sh"
